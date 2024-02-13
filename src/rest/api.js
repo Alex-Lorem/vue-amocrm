@@ -9,14 +9,12 @@ let token = ''
 
 
 const api = axios.create({
-    baseURL,
-    headers: {
-        'Content-Type': 'application/json',
-        'X-Client-Id': clientId
-    }
+    baseURL
 });
+
 api.interceptors.request.use( (config) => {
     config.headers.Authorization = `Bearer ${token}`
+    config.headers["Content-Type"] = 'application/json'
     return config
 }, (error) => {
     return Promise.reject(error)
@@ -25,7 +23,6 @@ api.interceptors.request.use( (config) => {
 export async function getToken() {
     const {data} = await api.get('http://localhost:5173/token', {
         headers: {
-            "Content-Type": 'application/json',
             "X-Client-Id": clientId
         }
     })
